@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR Generator - ToolNestX</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Arial,sans-serif; }
+  body { background:#0f1115; color:#eee; padding:20px; }
+  .back { color:#4f9dff; text-decoration:none; display:inline-block; margin-bottom:20px; }
+  .wrap { max-width:500px; margin:0 auto; text-align:center; }
+  h1 { color:#4f9dff; margin-bottom:20px; }
+  input { width:100%; padding:14px; border-radius:10px; border:1px solid #2a2f3a; background:#1b1f29; color:#eee; font-size:1em; margin-bottom:16px; }
+  #qrbox { background:#fff; display:inline-block; padding:16px; border-radius:12px; min-height:220px; }
+  #qrbox img { display:block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../index.html">← Back to ToolNestX</a>
+  <h1>📱 QR Code Generator</h1>
+  <input id="txt" placeholder="Enter text or URL..." oninput="makeQR()">
+  <div id="qrbox"></div>
+</div>
+<script>
+  function makeQR() {
+    const val = document.getElementById('txt').value.trim();
+    const box = document.getElementById('qrbox');
+    if (!val) { box.innerHTML = ''; return; }
+    const url = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(val);
+    box.innerHTML = '<img src="' + url + '" width="200" height="200">';
+  }
+</script>
+</body>
+</html>
