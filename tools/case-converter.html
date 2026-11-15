@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Converter - ToolNestX</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Arial,sans-serif; }
+  body { background:#0f1115; color:#eee; padding:20px; }
+  .back { color:#4f9dff; text-decoration:none; display:inline-block; margin-bottom:20px; }
+  .wrap { max-width:600px; margin:0 auto; }
+  h1 { color:#4f9dff; margin-bottom:20px; }
+  textarea { width:100%; height:160px; background:#1b1f29; color:#eee; border:1px solid #2a2f3a; border-radius:10px; padding:14px; font-size:1em; resize:vertical; margin-bottom:14px; }
+  .btns { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:14px; }
+  button { padding:12px; border:none; border-radius:10px; background:#4f9dff; color:#0f1115; font-weight:bold; font-size:0.9em; }
+  button:active { opacity:0.8; }
+  #copyBtn { width:100%; background:#1b1f29; color:#4f9dff; border:1px solid #4f9dff; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../index.html">← Back to ToolNestX</a>
+  <h1>🔤 Case Converter</h1>
+  <textarea id="txt" placeholder="Type or paste your text here..."></textarea>
+  <div class="btns">
+    <button onclick="setCase('upper')">UPPERCASE</button>
+    <button onclick="setCase('lower')">lowercase</button>
+    <button onclick="setCase('title')">Title Case</button>
+    <button onclick="setCase('sentence')">Sentence case</button>
+  </div>
+  <button id="copyBtn" onclick="copyText()">📋 Copy Text</button>
+</div>
+<script>
+  function setCase(type) {
+    const el = document.getElementById('txt');
+    let val = el.value;
+    if (type === 'upper') val = val.toUpperCase();
+    else if (type === 'lower') val = val.toLowerCase();
+    else if (type === 'title') val = val.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+    else if (type === 'sentence') val = val.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g, c => c.toUpperCase());
+    el.value = val;
+  }
+  function copyText() {
+    const el = document.getElementById('txt');
+    el.select();
+    document.execCommand('copy');
+    alert('Copied!');
+  }
+</script>
+</body>
+</html>
