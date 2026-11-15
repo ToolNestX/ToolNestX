@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Age Calculator - ToolNestX</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Arial,sans-serif; }
+  body { background:#0f1115; color:#eee; padding:20px; }
+  .back { color:#4f9dff; text-decoration:none; display:inline-block; margin-bottom:20px; }
+  .wrap { max-width:500px; margin:0 auto; }
+  h1 { color:#4f9dff; margin-bottom:20px; }
+  input { width:100%; padding:14px; border-radius:10px; border:1px solid #2a2f3a; background:#1b1f29; color:#eee; font-size:1em; margin-bottom:14px; }
+  button { width:100%; padding:14px; border:none; border-radius:10px; background:#4f9dff; color:#0f1115; font-weight:bold; font-size:1em; margin-bottom:16px; }
+  .stats { display:flex; gap:12px; flex-wrap:wrap; }
+  .stat { background:#1b1f29; border:1px solid #2a2f3a; border-radius:10px; padding:14px 18px; text-align:center; flex:1; min-width:90px; }
+  .stat .num { font-size:1.4em; color:#4f9dff; font-weight:bold; }
+  .stat .lbl { font-size:0.8em; color:#aaa; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../index.html">← Back to ToolNestX</a>
+  <h1>🎂 Age Calculator</h1>
+  <input type="date" id="dob">
+  <button onclick="calcAge()">Calculate Age</button>
+  <div class="stats">
+    <div class="stat"><div class="num" id="years">0</div><div class="lbl">Years</div></div>
+    <div class="stat"><div class="num" id="months">0</div><div class="lbl">Months</div></div>
+    <div class="stat"><div class="num" id="days">0</div><div class="lbl">Days</div></div>
+  </div>
+</div>
+<script>
+  function calcAge() {
+    const dobInput = document.getElementById('dob').value;
+    if (!dobInput) return;
+    const dob = new Date(dobInput);
+    const today = new Date();
+
+    let years = today.getFullYear() - dob.getFullYear();
+    let months = today.getMonth() - dob.getMonth();
+    let days = today.getDate() - dob.getDate();
+
+    if (days < 0) {
+      months--;
+      const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+      days += lastMonth.getDate();
+    }
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+
+    document.getElementById('years').textContent = years;
+    document.getElementById('months').textContent = months;
+    document.getElementById('days').textContent = days;
+  }
+</script>
+</body>
+</html>
