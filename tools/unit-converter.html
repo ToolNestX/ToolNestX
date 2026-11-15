@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit Converter - ToolNestX</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Arial,sans-serif; }
+  body { background:#0f1115; color:#eee; padding:20px; }
+  .back { color:#4f9dff; text-decoration:none; display:inline-block; margin-bottom:20px; }
+  .wrap { max-width:500px; margin:0 auto; }
+  h1 { color:#4f9dff; margin-bottom:20px; }
+  select, input { width:100%; padding:14px; border-radius:10px; border:1px solid #2a2f3a; background:#1b1f29; color:#eee; font-size:1em; margin-bottom:14px; }
+  .row { display:flex; gap:10px; align-items:center; }
+  .row > * { flex:1; }
+  #result { background:#1b1f29; border:1px solid #4f9dff; border-radius:10px; padding:16px; text-align:center; font-size:1.3em; color:#4f9dff; font-weight:bold; margin-top:10px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../index.html">← Back to ToolNestX</a>
+  <h1>📐 Unit Converter</h1>
+
+  <select id="category" onchange="updateUnits()">
+    <option value="length">Length</option>
+    <option value="weight">Weight</option>
+    <option value="temp">Temperature</option>
+  </select>
+
+  <input type="number" id="value" placeholder="Enter value" oninput="convert()" value="1">
+
+  <div class="row">
+    <select id="from" onchange="convert()"></select>
+    <select id="to" onchange="convert()"></select>
+  </div>
+
+  <div id="result">Result: --</div>
+</div>
+<script>
+  const units = {
+    length: { m:1, km:1000, cm:0.01, mm:0.001, mile:1609.34, yard:0.9144, foot:0.3048, inch:0.0254 },
+    weight: { kg:1, g:0.001, mg:0.000001, lb:0.453592, oz:0.0283495, ton:1000 },
+    temp: {} // special case
+  };
+
+  function updateUnits() {
+    const cat = document.getElementById('category').value;
+    const from = document.getElementById('from');
+    const to = document.getElementById('to');
+    from.innerHTML = ''; to.innerHTML = '';
+    let list = cat === 'temp' ? ['Celsius','Fahrenheit','Kelvin'] : Object.keys(units[cat]);
+    list.forEach(u => {
+      from.innerHTML += `<option value="${u}">${u}</option>`;
+      to.innerHTML += `<option value="${u}">${u}</option>`;
+    });
+    if (list.length > 1) to.selectedIndex = 1;
+    convert();
+  }
+
+  function convert() {
+    const cat = document.getElementById('category').value;
+    const val = parseFloat(document.getElementById('value').value) || 0;
+    const from = document.getElementById('from').value;
+    const to = document.getElementById('to').value;
+    let result;
+
+    if (cat === 'temp') {
+      let celsius;
+      if (from === 'Celsius') celsius = val;
+      else if (from === 'Fahrenheit') celsius = (val - 32) * 5/9;
+      else celsius = val - 273.15;
+
+      if (to === 'Celsius') result = celsius;
+      else if (to === 'Fahrenheit') result = celsius * 9/5 + 32;
+      else result = celsius + 273.15;
+    } else {
+      result = (val * units[cat][from]) / units[cat][to];
+    }
+    document.getElementById('result').textContent = 'Result: ' + result.toFixed(4) + ' ' + to;
+  }
+
+  updateUnits();
+</script>
+</body>
+</html>
